@@ -11,5 +11,5 @@ def depersonalize_data(df):
     return df
 
 if __name__ == "__main__":
-    data = pd.read_csv('../data/patients.csv')
+    data = pd.read_csv('data/patients.csv')
     depersonalize_data(data)
