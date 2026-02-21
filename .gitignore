@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+env/
+
+# Data files
+*.csv
+*.xlsx
+*.json
+*.parquet
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Misc
+*.log
+*.tmp
