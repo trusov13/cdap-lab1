@@ -14,3 +14,9 @@
 - /data: сырые данные (CSV-файлы датасета, не в Git)  
 - /notebooks: Jupyter notebooks  
 - /src: скрипты (loader.py для загрузки, deperson.py для деперсонализации)  
+
+## Merge conflict
+
+Скриншот конфликта при слиянии feature/data-loader в dev:
+
+![conflict](screenshot_conflict.png)
