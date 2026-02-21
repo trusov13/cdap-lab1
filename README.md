@@ -20,3 +20,9 @@
 Скриншот конфликта при слиянии feature/data-loader в dev:
 
 ![conflict](screenshot_conflict.png)
+
+## Git history
+
+История коммитов после выполнения лабораторной работы:
+
+![history](screenshot_git_log.png)
