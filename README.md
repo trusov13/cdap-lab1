@@ -186,14 +186,8 @@ docker compose down
 
 ## Скриншоты работы
 
-В репозитории представлены скриншоты:
+![run](docs/screenshots/docker_run.png)
+![dashboard](docs/screenshots/dashboard.png)
 
--   запуск контейнеров (docker ps)
--   логи соединения приложения с базой данных
--   работающий аналитический интерфейс
-
-Примеры:
-
-docs/screenshots/docker_run.png docs/screenshots/dashboard.png
 
 ------------------------------------------------------------------------
