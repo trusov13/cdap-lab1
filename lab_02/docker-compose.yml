@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+
+  db:
+    image: postgres:15
+    env_file: ../.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      interval: 5s
+      retries: 5
+    networks:
+      - backend-network
+
+  loader:
+    build: .
+    command: python loader.py
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ../data:/data:ro
+    env_file: ../.env
+    networks:
+      - backend-network
+
+  analytics_app:
+    build: .
+    command: streamlit run app.py --server.port=8501
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8501:8501"
+    env_file: ../.env
+    networks:
+      - backend-network
+
+volumes:
+  postgres_data:
+
+networks:
+  backend-network:
