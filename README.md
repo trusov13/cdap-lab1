@@ -168,8 +168,8 @@ docker compose down
 
 ## Скриншоты работы
 
-[docker_run](https://github.com/trusov13/cdap-lab1/blob/main/docs/screnshots/docker_run.png)
-[dashboard](https://github.com/trusov13/cdap-lab1/blob/main/docs/screnshots/dashboard.png)
+![docker_run](https://github.com/trusov13/cdap-lab1/blob/main/docs/screnshots/docker_run.png)
+![dashboard](https://github.com/trusov13/cdap-lab1/blob/main/docs/screnshots/dashboard.png)
 
 
 
