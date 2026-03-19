@@ -174,3 +174,77 @@ docker compose down
 
 
 ------------------------------------------------------------------------
+## Лабораторная работа №3
+
+### Оркестрация аналитического приложения в Kubernetes
+
+#### Цель работы
+
+Развернуть многокомпонентное приложение в Kubernetes: Deployment для базы данных и аналитического приложения, Job для одноразовой загрузки данных, Service для доступа, PersistentVolumeClaim для хранения, Secret для учетных данных, ConfigMap для конфигурации.
+
+------------------------------------------------------------------------
+
+Схема взаимодействия:
+
+CSV данные → loader-job → PostgreSQL (Deployment + PVC) → analytics-app (Deployment + Service NodePort)
+
+------------------------------------------------------------------------
+
+## Реализованные Kubernetes-ресурсы
+
+- Deployment: db (PostgreSQL), analytics-app (Streamlit)
+- Job: loader-job (ETL-загрузка данных, завершается после выполнения)
+- Service: app-service (NodePort 30001), db-service (ClusterIP)
+- PersistentVolumeClaim: для сохранения данных PostgreSQL
+- Secret: db-secret (учетные данные PostgreSQL)
+- ConfigMap: app-config (дополнительные настройки, если используются)
+
+------------------------------------------------------------------------
+## Init Container chmod-data
+
+Для корректной работы Streamlit-приложения с непривилегированным пользователем добавлен **init-контейнер** `chmod-data`.
+
+Он выполняет команду:
+
+```yaml
+command: ["chmod", "-R", "777", "/app/data"]
+```
+и гарантирует, что приложение имеет права на запись в смонтированный volume.
+
+## Health probes и готовность
+
+- readinessProbe и livenessProbe для Deployment db и analytics-app
+- Job loader завершается успешно (exit code 0) после загрузки данных
+
+------------------------------------------------------------------------
+
+## Запуск и проверка
+
+```bash
+# Применить манифесты
+kubectl apply -f k8s/
+
+# Посмотреть состояние
+kubectl get pods,svc,pvc,job -o wide
+
+# Логи загрузчика
+kubectl logs job/loader-job --tail=100
+
+# Логи приложения
+kubectl logs -l app=analytics --tail=100
+
+# Получить URL дашборда
+minikube service app-service --url
+# или открыть: http://<minikube-ip>:30001
+
+Скриншоты работы
+<img src="docs/screenshots/k8s-chmod-init.jpg" alt="chmod-init">
+Init-контейнер chmod-data — выполнена команда chmod
+<img src="docs/screenshots/k8s-pods.jpg" alt="pods">
+Список подов: db и analytics-app в статусе Running, loader-job Completed
+<img src="docs/screenshots/k8s-loader-logs.jpg" alt="loader-logs">
+Логи Job loader — успешная загрузка данных
+<img src="docs/screenshots/k8s-dashboard.jpg" alt="dashboard">
+Работающий Streamlit дашборд в браузере
+<img src="docs/screenshots/k8s-get-all.jpg" alt="kubectl-get-all">
+Вывод kubectl get all или kubectl get pods,svc,pvc,job
