@@ -200,7 +200,7 @@ CSV данные → loader-job → PostgreSQL (Deployment + PVC) → analytics-
 - ConfigMap: app-config (дополнительные настройки, если используются)
 
 ------------------------------------------------------------------------
-## Init Container chmod-data
+## Init Container chmod-data (вариант 29)
 
 Для корректной работы Streamlit-приложения с непривилегированным пользователем добавлен **init-контейнер** `chmod-data`.
 
@@ -239,13 +239,13 @@ minikube service app-service --url
 ```
 
 Скриншоты работы
-<img src="docs/screenshots/k8s-chmod-init.jpg" alt="chmod-init">
+<img src="docs/screnshots/k8s-chmod-init.jpg" alt="chmod-init">
 Init-контейнер chmod-data — выполнена команда chmod
-<img src="docs/screenshots/k8s-pods.jpg" alt="pods">
+<img src="docs/screnshots/k8s-pods.jpg" alt="pods">
 Список подов: db и analytics-app в статусе Running, loader-job Completed
-<img src="docs/screenshots/k8s-loader-logs.jpg" alt="loader-logs">
+<img src="docs/screnshots/k8s-loader-logs.jpg" alt="loader-logs">
 Логи Job loader — успешная загрузка данных
-<img src="docs/screenshots/k8s-dashboard.jpg" alt="dashboard">
+<img src="docs/screnshots/k8s-dashboard.jpg" alt="dashboard">
 Работающий Streamlit дашборд в браузере
-<img src="docs/screenshots/k8s-get-all.jpg" alt="kubectl-get-all">
+<img src="docs/screnshots/k8s-get-all.jpg" alt="kubectl-get-all">
 Вывод kubectl get all или kubectl get pods,svc,pvc,job
