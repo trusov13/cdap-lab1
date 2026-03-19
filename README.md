@@ -236,6 +236,7 @@ kubectl logs -l app=analytics --tail=100
 # Получить URL дашборда
 minikube service app-service --url
 # или открыть: http://<minikube-ip>:30001
+```
 
 Скриншоты работы
 <img src="docs/screenshots/k8s-chmod-init.jpg" alt="chmod-init">
