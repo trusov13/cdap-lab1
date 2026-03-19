@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytics-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: analytics
+  template:
+    metadata:
+      labels:
+        app: analytics
+    spec:
+      initContainers:
+      - name: chmod-data
+        image: busybox:1.36
+        command: ["sh", "-c", "chmod -R 777 /data && echo '=== chmod выполнен! ==='"]
+        volumeMounts:
+        - name: data-volume
+          mountPath: /data
+      containers:
+      - name: app
+        image: cdap-lab2-app:latest
+        imagePullPolicy: Never
+        command: ["streamlit", "run", "app.py"]
+        args:
+          - "--server.port=8501"
+          - "--server.headless=true"
+          - "--server.enableCORS=false"
+          - "--server.enableXsrfProtection=false"
+          - "--server.enableWebsocketCompression=false"
+          - "--browser.gatherUsageStats=false"
+        ports:
+        - containerPort: 8501
+        envFrom:
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: db-secret
+        volumeMounts:
+        - name: data-volume
+          mountPath: /data
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8501
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8501
+          initialDelaySeconds: 20
+          periodSeconds: 5
+      volumes:
+      - name: data-volume
+        emptyDir: {}
