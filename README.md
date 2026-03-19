@@ -238,14 +238,22 @@ minikube service app-service --url
 # или открыть: http://<minikube-ip>:30001
 ```
 
-Скриншоты работы
-<img src="docs/screnshots/k8s-chmod-init.jpg" alt="chmod-init">
-Init-контейнер chmod-data — выполнена команда chmod
-<img src="docs/screnshots/k8s-pods.jpg" alt="pods">
-Список подов: db и analytics-app в статусе Running, loader-job Completed
-<img src="docs/screnshots/k8s-loader-logs.jpg" alt="loader-logs">
-Логи Job loader — успешная загрузка данных
-<img src="docs/screnshots/k8s-dashboard.jpg" alt="dashboard">
-Работающий Streamlit дашборд в браузере
-<img src="docs/screnshots/k8s-get-all.jpg" alt="kubectl-get-all">
-Вывод kubectl get all или kubectl get pods,svc,pvc,job
+## Скриншоты работы
+
+Init-контейнер `chmod-data` — успешно выполнена команда `chmod -R 777 /app/data`  
+![chmod-init](docs/screnshots/k8s-chmod-init.jpg)
+
+Список подов:  
+- analytics-app: Running  
+- db: Running  
+- loader-job: Completed  
+![pods](docs/screnshots/k8s-pods.jpg)
+
+Логи Job `loader-job` — данные успешно загружены в базу  
+![loader-logs](docs/screnshots/k8s-loader-logs.jpg)
+
+Открытый дашборд Medical Records Dashboard в браузере  
+![dashboard](docs/screnshots/k8s-dashboard.jpg)
+
+Общий вывод ресурсов Kubernetes  
+![kubectl-get-all](docs/screnshots/k8s-get-all.jpg)
