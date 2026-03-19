@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: loader-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: loader
+        image: cdap-lab2-app:latest
+        imagePullPolicy: Never
+        command: ["python", "loader.py"]
+        envFrom:
+        - configMapRef:
+            name: app-config
+        - secretRef:
+            name: db-secret
+        volumeMounts:
+        - name: data-volume
+          mountPath: /data
+      volumes:
+      - name: data-volume
+        hostPath:
+          path: /mnt/data               # ← если используешь minikube mount
+          type: DirectoryOrCreate
+      restartPolicy: Never
+  backoffLimit: 4
