@@ -18,18 +18,17 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
-                    echo "=== Применяем все манифесты из lab_03/ (с флагами для Minikube) ==="
+                    echo "=== Применяем все манифесты из lab_03/ (игнорируем TLS и валидацию для Minikube) ==="
                     kubectl apply -f lab_03/ --validate=false --insecure-skip-tls-verify=true
                     
-                    echo "=== Ждём готовности приложения ==="
+                    echo "=== Ждём готовности приложения (игнорируем TLS) ==="
                     kubectl rollout status deployment/analytics-app --timeout=120s --insecure-skip-tls-verify=true || true
                     
-                    echo "=== Состояние кластера после деплоя ==="
+                    echo "=== Показываем состояние кластера ==="
                     kubectl get pods,svc,pvc,job -o wide --insecure-skip-tls-verify=true
                 '''
             }
         }
-    }
 
     post {
         success {
