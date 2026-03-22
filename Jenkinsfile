@@ -9,7 +9,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-                    docker build -t $IMAGE_NAME:$TAG -f lab_02/Dockerfile .
+                    docker build -t $IMAGE_NAME:$TAG -f lab_02/Dockerfile lab_02/
                     docker tag $IMAGE_NAME:$TAG $IMAGE_NAME:latest
                 '''
             }
