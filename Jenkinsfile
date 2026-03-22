@@ -2,16 +2,10 @@ pipeline {
     agent any
     environment {
         IMAGE_NAME = "cdap-analytics-app"
-        TAG = "${BUILD_NUMBER}"
+        TAG        = "${BUILD_NUMBER}"
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'lab-04-jenkins', url: 'https://github.com/trusov13/cdap-lab1.git'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh '''
@@ -27,7 +21,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes (Minikube)') {
+        stage('Deploy to Kubernetes') {
             steps {
                 sh '''
                     kubectl apply -f k8s/
@@ -38,11 +32,11 @@ pipeline {
     }
 
     post {
-        always {
-            echo 'Pipeline завершён!'
-        }
         success {
-            echo '✅ Успешный деплой!'
+            echo '✅ Pipeline успешно завершён!'
+        }
+        failure {
+            echo '❌ Pipeline упал'
         }
     }
 }
