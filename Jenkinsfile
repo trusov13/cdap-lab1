@@ -9,7 +9,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-                    docker build -t $IMAGE_NAME:$TAG -f Dockerfile .
+                    docker build -t $IMAGE_NAME:$TAG -f lab_02/Dockerfile .
                     docker tag $IMAGE_NAME:$TAG $IMAGE_NAME:latest
                 '''
             }
@@ -24,7 +24,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
-                    kubectl apply -f k8s/
+                    kubectl apply -f lab_03/k8s/     # ← если манифесты в lab_03/k8s/
                     kubectl rollout status deployment/analytics-app --timeout=120s
                 '''
             }
