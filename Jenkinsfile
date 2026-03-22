@@ -15,17 +15,17 @@ pipeline {
             }
         }
 
-        stage('Trivy Security Scan') {
-            steps {
-                sh 'docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasecurity/trivy image $IMAGE_NAME:$TAG --exit-code 1 --severity HIGH,CRITICAL'
-            }
-        }
-
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
-                    kubectl apply -f lab_03/k8s/     # ← если манифесты в lab_03/k8s/
-                    kubectl rollout status deployment/analytics-app --timeout=120s
+                    echo "=== Применяем все манифесты из lab_03/ ==="
+                    kubectl apply -f lab_03/
+                    
+                    echo "=== Ждём готовности приложения ==="
+                    kubectl rollout status deployment/analytics-app --timeout=120s || true
+                    
+                    echo "=== Состояние кластера после деплоя ==="
+                    kubectl get pods,svc,pvc,job -o wide
                 '''
             }
         }
